@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abzeichen</title>
+  <style>
+    /* General Styles */
+    body {
+
+      background:  url(images/Peechedekho.jpg) center/cover no-repeat;
+      color: black;
+
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      background-image: linear-gradient(to bottom, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.801);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+    .header {
+      background-color: #fff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    }
+
+    .header button {
+      font-size: 16px;
+      background-color: #000501;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .container {
+      margin-top: 100px;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Current Level Section */
+    .current-level {
+      background-color: #fff;
+      border: 2px solid #000501;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .current-level img {
+      width: 80px;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    .current-level h2 {
+      color: #333;
+    }
+
+    .current-level .level-progress {
+      font-size: 16px;
+      color: #28a745;
+      margin-top: 10px;
+    }
+
+    /* Upcoming Badges Section */
+    .upcoming-badges {
+      background-color: #fff;
+      border: 2px solid #000702;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .upcoming-badges h2 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .badge-item {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 2px solid #000802;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .badge-item .badge-info {
+      flex-grow: 1;
+    }
+
+    .badge-item .badge-info p {
+      margin: 0;
+      color: #333;
+    }
+
+    .badge-item .badge-progress {
+      font-size: 14px;
+      color: #28a745;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+    }
+
+    .bottom-nav a {
+      color: #333;
+      text-decoration: none;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bottom-nav a span {
+      font-size: 14px;
+      color: #000702;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 15px;
+      background-color: #000301;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <a href="BasePage.html" class="back-button">&larr; Zurück</a>
+    <h1 id="header-title">Abzeichen</h1>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Current Level Section -->
+    <section class="current-level">
+      <h2>Mein Level</h2>
+      <img src="images/seed.jpg" alt="Seedling Badge">
+      <p class="level-progress">0/1 Nutzung</p>
+    </section>
+
+    <!-- Upcoming Badges Section -->
+    <section class="upcoming-badges">
+      <h2>Kommende Abzeichen</h2>
+
+      <div class="badge-item">
+        <img src="images/seed.jpg" alt="Seed Badge">
+        <div class="badge-info">
+          <p>Sämling</p>
+          <p class="badge-progress">0/3 Nutzung</p>
+        </div>
+      </div>
+
+      <div class="badge-item">
+        <img src="images/leaf.jpg" alt="Leaf Badge">
+        <div class="badge-info">
+          <p>Grünes Blatt</p>
+          <p class="badge-progress">0/5 Nutzung</p>
+        </div>
+      </div>
+
+      <div class="badge-item">
+        <img src="images/sapling.jpg" alt="Sapling Badge">
+        <div class="badge-info">
+          <p>Schössling</p>
+          <p class="badge-progress">0/10 Nutzung</p>
+        </div>
+      </div>
+
+      <div class="badge-item">
+        <img src="images/oak.jpg" alt="Oak Badge">
+        <div class="badge-info">
+          <p>Eiche</p>
+          <p class="badge-progress">0/25 Nutzung</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const badges = document.querySelectorAll(".badge-item");
+
+      badges.forEach((badge) => {
+        const progressText = badge.querySelector(".badge-progress");
+
+        badge.addEventListener("click", () => {
+          alert(`Badge "${badge.querySelector("p").innerText}" selected!`);
+          progressText.style.color = "#ffc107"; // Highlight text when clicked
+        });
+      });
+    });
+  </script>
+</body>
+</html>

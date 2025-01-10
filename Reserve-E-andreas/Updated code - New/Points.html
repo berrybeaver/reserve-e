@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartLab EV-Charging</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* General Styles */
+   /* General Styles */
+body {
+
+   
+  background:  url(images/Peechedekho.jpg) center/cover no-repeat;
+  color: black;
+
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.801);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+.header {
+  background-color: #fff;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.view {
+  padding: 20px;
+  margin-top: 80px; /* Avoid overlap with the fixed header */
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#search-bar {
+  padding: 10px;
+  width: 90%;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#search-button {
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.back-button {
+  background-color: #050705; 
+  position: absolute;
+  left: 15px;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 0 0 0 0;
+  
+}
+
+.button {
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #080c09;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
+.points-box {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #e0e0e0;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 8px;
+}
+
+.points-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 400px;
+}
+
+.modal-content h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.bonus-icon {
+  width: 100px;
+  height: 100px;
+  margin: 20px 0;
+}
+
+.modal-content p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+
+/* Redeem Points Page */
+.redeem-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 100px;
+}
+
+.redeem-item {
+  background-color: #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.redeem-item h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.redeem-item p {
+  font-size: 14px;
+  color: #555;
+}
+
+.redeem-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.redeem-button:hover {
+  background-color: #333;
+}
+  </style>
+
+</head>
+<body>
+ 
+  <div id="pointsPage" class="view">
+    <div class="header">
+        <a href="BasePage.html" class="back-button">&larr; Zurück</a>
+        <h1>MEINE Punkte</h1>
+      </div>
+    <div class="points-box" id="userPoints">0 P</div>
+    <button class="points-button" id="claimBonusButton">TÄGLICHER BONUS BEANSPRUCHEN</button>
+    <button class="points-button" id="redeemPointsButton">MEINE PUNKTE EINLÖSEN</button>
+  </div>
+
+  <!-- Redeem Points Page -->    
+   <div class="header">
+        <a href="BasePage.html" class="back-button">&larr; Zurück</a>
+        <h1>Meine Punkte</h1>
+      
+  <div id="redeemPage" class="view hidden">
+    <h2>PUNKTE EINLÖSEN</h2>
+    <div class="redeem-container">
+      <div class="redeem-item">
+        <h3>BEISPIEL RESTAURANT</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <button class="redeem-button">BESTÄTIGEN</button>
+      </div>
+      <div class="redeem-item">
+        <h3>BEISPIEL RESERVIERUNG PRIO</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <button class="redeem-button">BESTÄTIGEN</button>
+      </div>
+      <div class="redeem-item">
+        <h3>BEISPIEL 3</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <button class="redeem-button">BESTÄTIGEN</button>
+      </div>
+      <div class="redeem-item">
+        <h3>BEISPIEL 4</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <button class="redeem-button">BESTÄTIGEN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Bonus Modal -->
+  <div id="bonusModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-button" id="closeModalButton">✖</span>
+      <h3>Täglicher Login Bonus</h3>
+      <img src="images/1212.jpg" alt="Bonus Wheel" class="bonus-icon">
+      <p>+50 P</p>
+    </div>
+  </div>
+
+
+  <script>
+// Elements
+const homePage = document.getElementById('homePage');
+const pointsPage = document.getElementById('pointsPage');
+const redeemPage = document.getElementById('redeemPage');
+const myPointsButton = document.getElementById('myPointsButton');
+const backButton = document.getElementById('backButton');
+const headerTitle = document.getElementById('header-title');
+const claimBonusButton = document.getElementById('claimBonusButton');
+const redeemPointsButton = document.getElementById('redeemPointsButton');
+const bonusModal = document.getElementById('bonusModal');
+const closeModalButton = document.getElementById('closeModalButton');
+const userPointsBox = document.getElementById('userPoints');
+
+// Simulated user points
+let userPoints = 300;
+
+
+// Update Points Display
+function updatePointsDisplay() {
+  userPointsBox.textContent = `${userPoints} P`;
+}
+
+// Claim Bonus and Show Modal
+claimBonusButton.addEventListener('click', () => {
+  userPoints += 50; // Add bonus points
+  updatePointsDisplay();
+  bonusModal.classList.remove('hidden'); // Show modal
+});
+
+// Close Modal
+closeModalButton.addEventListener('click', () => {
+  bonusModal.classList.add('hidden');
+});
+
+// Navigate to Redeem Points Page
+redeemPointsButton.addEventListener('click', () => {
+  pointsPage.classList.add('hidden');
+  redeemPage.classList.remove('hidden');
+  headerTitle.textContent = "PUNKTE EINLÖSEN";
+});
+
+// Close Modal by Clicking Outside
+window.addEventListener('click', (event) => {
+  if (event.target === bonusModal) {
+    bonusModal.classList.add('hidden');
+  }
+});
+  </script>
+</body>
+</html>

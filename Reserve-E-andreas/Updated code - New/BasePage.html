@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charging Station Map</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .floating-profile {
+  position: fixed;
+  top: 20px;
+  right: 40px;
+  z-index: 1000;
+}
+
+.profile-button {
+  background-color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-button:hover {
+  transform: scale(1.1);
+}
+
+.avatar-icon {
+  width: 30px;
+  height: 30px;
+ filter: invert(100%);
+}
+
+.profile-details {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  background-color: #fff;
+  color: #000;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.profile-details.hidden {
+  display: none;
+}
+
+.profile-header {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.profile-info {
+  padding: 15px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+}
+
+.profile-info strong {
+  color: #000;
+}
+
+    .search-container {
+      position: absolute;
+      top: 20px; 
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      gap: 10px; 
+      padding: 10px; 
+    }
+
+    .search-container input {
+      width: 400px; 
+      padding: 15px; 
+      border: 1px solid #ddd;
+      border-radius: 8px; 
+      font-size: 18px;
+    }
+
+    .search-container button {
+      padding: 15px 20px; 
+      background-color: #050708; 
+      color: white;
+      border: none;
+      border-radius: 8px; 
+      font-size: 18px; 
+      cursor: pointer;
+    }
+
+    .search-container button:hover {
+      transform: scale(1.1);
+    }
+
+    .floating-button {
+      position: fixed;
+      bottom: 20px;
+      right: 50px;
+      background-color: #090f14;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .floating-button:hover {
+      transform: scale(1.1)
+    }
+
+    .popup-menu {
+      position: fixed;
+      bottom: 100px;
+      right: 50px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      display: none; 
+      z-index: 1000;
+    }
+
+    .popup-menu button {
+      background-color: #050708; 
+      color: white;
+      border: none;
+      border-radius: 8px; 
+      padding: 15px 20px; 
+      margin: 10px 0; 
+      width: 100%;
+      text-align: left;
+      font-size: 18px; 
+      cursor: pointer;
+    }
+
+    .popup-menu button:hover {
+      transform: scale(1.1)
+    }
+
+    #map {
+      height: 100vh; 
+      width: 100vw;  
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .modal-content input {
+      padding: 10px;
+      margin: 10px;
+      width: 100%;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    
+    .modal-content button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floating-profile">
+    <button id="profileButton" class="profile-button">
+      <img src="images/avatar.png" alt="Avatar" class="avatar-icon">
+    </button>
+    <div id="profileDetails" class="profile-details hidden">
+      <div class="profile-header">
+        <h2>John Doe</h2>
+      </div>
+      <div class="profile-info">
+        <p><strong>Username:</strong> KingJohnDoe123 </p>
+        <p><strong>Email:</strong> johndoe@example.com</p>
+        <p><strong>Badges:</strong> <img src="images/leaf.jpg" alt="Avatar" class="avatar-icon"> <img src="images/ev.png" alt="Avatar" class="avatar-icon">  </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <input id="searchBar" type="text" placeholder="Search for a Charging Station...">
+    <button onclick="searchLocation()">Search</button>
+  </div>
+
+  <div id="map"></div>
+
+  <button class="floating-button" onclick="togglePopupMenu()"> <img src="images/award.png" alt="Avatar" class="avatar-icon"></button>
+  
+  <div class="popup-menu" id="popupMenu">
+    <!-- Modify the Reserve Spot button to call openReserveModal() -->
+    <button id="reserveSpotBtn">📅 Reservations</button>
+    <button onclick="navigateTo('Points.html')">💎 Points </button>
+    <button onclick="navigateTo('Quest.html')">🎯 Quests</button>
+    <button onclick="navigateTo('Badge.html')">🎖 Badges</button>
+  </div>
+
+  <!-- Reserve Spot Modal -->
+  <div class="modal" id="reserveModal" style="display: none;">
+    <div class="modal-content">
+      <h3>Confirm your Reservation</h3>
+      <p id="locationInfo"></p>
+      <label for="reservationTime">Enter Reservation Time:</label>
+      <input type="time" id="reservationTime">
+      <button onclick="makeReservation()">Make Reservation</button>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal" id="successModal" style="display: none;">
+    <div class="modal-content">
+      <h3>Reservation Successful!</h3>
+      <p id="successMessage"></p>
+    </div>
+  </div>
+
+  <script>
+    let map;
+    let markers = [];
+    let infoWindow;
+    let selectedLocation;
+
+    function initMap() {
+      const mapContainer = document.getElementById("map");
+      map = new google.maps.Map(mapContainer, {
+        center: { lat: 50.775555, lng: 6.083611 }, 
+        zoom: 12,
+      });
+
+      infoWindow = new google.maps.InfoWindow();
+
+      const chargingStations = [
+        { lat: 37.773972, lng: -122.431297, name: "Station 1" },
+        { lat: 37.779026, lng: -122.419906, name: "Station 2" },
+      ];
+
+      chargingStations.forEach((station) => {
+        const marker = new google.maps.Marker({
+          position: { lat: station.lat, lng: station.lng },
+          map: map,
+          title: station.name,
+        });
+
+        marker.addListener("click", () => {
+          selectedLocation = station;
+          infoWindow.setContent(
+            `<div><strong>${station.name}</strong><br><button id="reserveSpotBtn">Reserve Spot</button></div>`
+          );
+          infoWindow.open(map, marker);
+
+          // Dynamically add event listener to the "Reserve Spot" button
+          const reserveBtn = document.getElementById("reserveSpotBtn");
+          if (reserveBtn) {
+            reserveBtn.addEventListener("click", openReserveModal);
+          }
+        });
+
+        markers.push(marker);
+      });
+    }
+
+    function openReserveModal() {
+      const locationInfo = document.getElementById("locationInfo");
+      locationInfo.textContent = `Location: ${selectedLocation.name}`;
+      document.getElementById("reserveModal").style.display = "flex";
+    }
+
+    function searchLocation() {
+      const input = document.getElementById("searchBar").value;
+
+      if (!input) {
+        alert("Please enter a location to search.");
+        return;
+      }
+
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ address: input }, (results, status) => {
+        if (status === "OK") {
+          const location = results[0].geometry.location;
+          map.setCenter(location);
+          map.setZoom(14);
+
+          clearMarkers();
+
+          const marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: results[0].formatted_address,
+          });
+
+          marker.addListener("click", () => {
+            selectedLocation = { name: results[0].formatted_address };
+            openReserveModal();
+          });
+
+          markers.push(marker);
+        } else {
+          alert("Geocoding failed: " + status);
+        }
+      });
+    }
+
+    function clearMarkers() {
+      markers.forEach((marker) => marker.setMap(null));
+      markers = [];
+    }
+
+    function makeReservation() {
+      const reservationTime = document.getElementById("reservationTime").value;
+
+      if (!reservationTime) {
+        alert("Please enter a reservation time.");
+        return;
+      }
+
+      const successMessage = document.getElementById("successMessage");
+      successMessage.innerHTML = `Reservation successful at ${selectedLocation.name} for ${reservationTime}.`;
+      document.getElementById("reserveModal").style.display = "none";
+      document.getElementById("successModal").style.display = "flex";
+    }
+
+    function togglePopupMenu() {
+      const popupMenu = document.getElementById("popupMenu");
+      popupMenu.style.display = popupMenu.style.display === "block" ? "none" : "block";
+    }
+
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+
+    document.getElementById("profileButton").addEventListener("click", function () {
+  const profileDetails = document.getElementById("profileDetails");
+  profileDetails.classList.toggle("hidden");
+});
+
+chargingStations.forEach((station) => {
+  const marker = new google.maps.Marker({
+    position: { lat: station.lat, lng: station.lng },
+    map: map,
+    title: station.name,
+  });
+
+  marker.addListener("click", () => {
+    selectedLocation = station;
+
+    // Update the content dynamically
+    infoWindow.setContent(
+      `<div>
+        <strong>${station.name}</strong><br>
+        <button id="dynamicReserveBtn">Reserve Spot</button>
+      </div>`
+    );
+    infoWindow.open(map, marker);
+
+    // Add event listener to the dynamically created button
+    google.maps.event.addListenerOnce(infoWindow, 'domready', function () {
+      const dynamicReserveBtn = document.getElementById("dynamicReserveBtn");
+      if (dynamicReserveBtn) {
+        dynamicReserveBtn.addEventListener("click", openReserveModal);
+      }
+    });
+  });
+
+  markers.push(marker);
+});
+
+document.getElementById("reserveSpotBtn").addEventListener("click", () => {
+  openReserveModal();
+});
+
+
+
+
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6mwCHPXZAo_G1vbl5g9QSTb3CvbvgOwc&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>
